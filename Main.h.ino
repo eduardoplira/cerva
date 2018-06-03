@@ -28,7 +28,10 @@ byte Ts3addr[8];
 byte type_s;                // Colocar uma variavel por sensor
 float temp[3];              // Temperatura atual
 int Tset[3] = {25, 26, 27}; // Temperatura setada
-int litragem1 = 1;
+
+// variaveis recebiveis
+
+int litragem1;
 int litragem2;
 byte Temperatura[5];
 //byte curvaaq[5];
@@ -57,11 +60,13 @@ void setup()
   Alarm.timerRepeat(10, controlatemp);
   Serial.println();
   Serial.println();
-  Serial.println("Inicio");
+  Serial.println("Inicio Duds");
 }
 
 void loop()
 {
+  recebedados();
+  while(1);
   float p;
   int val;
   val = (analogRead(2));
@@ -70,12 +75,11 @@ void loop()
   Alarm.delay(1000);
 
   enchetk1(litragem1);
-  aquecetk1(Temperatura[1]);
+  aquecetk1(Temperatura[1]+5);  //5 a mais que primeira Temperatura
   transferetk1();
   enchetk1(litragem2);
   aquecetk2();
   transferetk2();
-  //aquecer TK1
   transferetk1();
   //agitatk2 quantos minutos?
   transferetk2();
