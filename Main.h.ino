@@ -6,11 +6,17 @@
 #define Buz 3  //Buzzer
 #define CV1 4  //Valvula de entrada de água do sistema
 #define CV2 5  //Valvula de saída TK1
+#define CV2d 5
 #define CV3 6  //Valvula de entrada TK2
+#define CV3d 6
 #define CV4 7  //Valvula de saída TK2
+#define CV4d 7
 #define CV5 8  //Valvula de entrada TK3
+#define CV5d 8
 #define CV6 9  //Valvula de saída TK3
+#define CV6d 9
 #define CV7 10 //Valvula de saída do sistema para fermentação
+#define CV7d 10
 #define CV8 11 //Valvula de resfriamento
 #define B1 12  //Bomba
 #define Q1 13
@@ -66,7 +72,6 @@ void setup()
 void loop()
 {
   recebedados();
-  while(1);
   float p;
   int val;
   val = (analogRead(2));

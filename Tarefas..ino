@@ -61,8 +61,8 @@ void transferetk1()
     byte t;
     Tset[1] = 0; //Desliga TK1
     Serial.println("Transferindo TK1>TK2");
-    digitalWrite(CV2, HIGH);
-    digitalWrite(CV3, HIGH);
+    Cv2(1);
+    Cv3(1);
     for (t = 5; t > 0; t--)
     { // espera 5s para encher a tubulação
         Alarm.delay(1000);
@@ -76,9 +76,9 @@ void transferetk1()
         else
             printaerro(3, 3);
     }
-    digitalWrite(CV2, LOW);
+    Cv2(0);
+    Cv3(0);
     digitalWrite(B1, LOW);
-    digitalWrite(CV3, LOW);
     Serial.println("Transferencia Completa");
 }
 
@@ -88,8 +88,8 @@ void aquecetk2() //Colocar erro de timeout
     byte t;
     int timer;
     Serial.println("Brassagem");
-    digitalWrite(CV4, HIGH); //abre saída TK2
-    digitalWrite(CV3, HIGH); //abre entrada TK2
+    Cv3(1);
+    Cv4(1);
     for (t = 5; t > 0; t--)
     { // espera 5s para encher a tubulação
         Alarm.delay(1000);
@@ -145,6 +145,8 @@ void aquecetk2() //Colocar erro de timeout
     }
     Serial.println("Fim do primeiro cozimento");
     Tset[2] = 0; //Desliga aquecimento
+    Cv3(0);
+    Cv4(0);
     Alarm.delay(1);
 }
 
@@ -154,14 +156,14 @@ void transferetk2()
     byte t;
     Tset[2] = 0; //Desliga TK2
     Serial.println("Transferindo TK2>TK3");
-    digitalWrite(CV3, HIGH); //abre retorno TK2
-    digitalWrite(CV5, HIGH); //abre retorno TK3      Reduz perda no retorno ao trocar de tanque
+    Cv3(1);
+    Cv5(1);
     for (t = 5; t > 0; t--)
     { // espera 5s para encher a tubulação
         Alarm.delay(1000);
     }
-    digitalWrite(CV3, LOW);
-    digitalWrite(CV4, HIGH);
+        Cv3(0);
+        Cv4(1);
     digitalWrite(B1, HIGH);
     while (digitalRead(PT1))
     {
@@ -171,9 +173,9 @@ void transferetk2()
         else
             printaerro(3, 3);
     }
-    digitalWrite(CV4, LOW);
+    Cv4(0);
+    Cv5(0);
     digitalWrite(B1, LOW);
-    digitalWrite(CV5, LOW);
     Serial.println("Transferencia Completa");
 }
 
@@ -182,8 +184,8 @@ void fervura() //Colocar erro de timeout
     byte c;
     byte t;
     Serial.println("Fervura");
-    digitalWrite(CV5, HIGH); //abre saída TK3
-    digitalWrite(CV6, HIGH); //abre entrada TK3
+    Cv6(1);
+    Cv5(1);
     for (t = 5; t > 0; t--)
     { // espera 5s para encher a tubulação
         Alarm.delay(1000);
@@ -191,8 +193,8 @@ void fervura() //Colocar erro de timeout
     digitalWrite(B1, HIGH); //liga bomba
     Tset[3] = Temperaturafer;
     digitalWrite(B1, LOW);  //Desliga Bomba
-    digitalWrite(CV6, LOW); //Fecha saída TK2
-    digitalWrite(CV5, LOW); //Fecha entrada TK2
+    Cv6(0);
+    Cv5(0);
     while (temp[3] < Tset[3])
         Alarm.delay(1000); //Espera ferver
     int e= Tempoferv *60;
@@ -236,8 +238,8 @@ void resfriamento()
 {
     byte t;
     Serial.println("Iniciando resfriamento");
-    digitalWrite(CV5, HIGH); //abre saída TK3
-    digitalWrite(CV6, HIGH); //abre entrada TK3
+    Cv6(1);
+    Cv5(1);
     for (t = 5; t > 0; t--)
     { // espera 5s para encher a tubulação
         Alarm.delay(1000);
@@ -251,8 +253,8 @@ void resfriamento()
     Serial.println("Temperatura adequada para adição de fermento");
     digitalWrite(CV8, LOW);
     digitalWrite(B1, LOW);
-    digitalWrite(CV6, LOW);
-    digitalWrite(CV5, LOW);
+    Cv6(0);
+    Cv5(0);
 }
 
 void saida()
@@ -260,8 +262,8 @@ void saida()
     byte t;
     int timer = 3000;
     Serial.println("Iniciando saida");
-    digitalWrite(CV6, HIGH); //abre saída TK3
-    digitalWrite(CV7, HIGH); //abre entrada TK3
+    Cv6(1);
+    Cv7(1);
     for (t = 5; t > 0; t--)
     { // espera 5s para encher a tubulação
         Alarm.delay(1000);
@@ -277,14 +279,14 @@ void saida()
             printaerro(3, 3);
     }
     digitalWrite(B1, LOW);
-    digitalWrite(CV6, LOW);
-    digitalWrite(CV5, HIGH);
+     Cv6(0);
+    Cv5(1);   
     for (t = 20; t > 0; t--) //espera 20s para esvazia a mangueira
     {
         Alarm.delay(1000);
     }
-    digitalWrite(CV5, LOW);
-    digitalWrite(CV7, LOW);
+    Cv5(0);
+    Cv7(0);    
     digitalWrite(Buz, HIGH);
     for (t = 3; t > 0; t--) //Bipa por 3s
     {
@@ -292,3 +294,65 @@ void saida()
     }
     digitalWrite(Buz, LOW);
 }
+
+
+void Cv2(byte l)
+{
+    if (l)
+    digitalWrite(CV2d, HIGH);
+    else digitalWrite(CV2d, LOW);
+    digitalWrite(CV2, HIGH);
+    delay(1000);
+    digitalWrite(CV2, LOW);
+}
+
+void Cv3(byte l)
+{
+    if (l)
+    digitalWrite(CV3d, HIGH);
+    else digitalWrite(CV2d, LOW);
+    digitalWrite(CV3, HIGH);
+    delay(1000);
+    digitalWrite(CV3, LOW);
+}
+
+void Cv4(byte l)
+{
+    if (l)
+    digitalWrite(CV4d, HIGH);
+    else digitalWrite(CV4d, LOW);
+    digitalWrite(CV4, HIGH);
+    delay(1000);
+    digitalWrite(CV4, LOW);
+}
+
+void Cv5(byte l)
+{
+    if (l)
+    digitalWrite(CV5d, HIGH);
+    else digitalWrite(CV5d, LOW);
+    digitalWrite(CV5, HIGH);
+    delay(1000);
+    digitalWrite(CV5, LOW);
+}
+
+void Cv6(byte l)
+{
+    if (l)
+    digitalWrite(CV6d, HIGH);
+    else digitalWrite(CV6d, LOW);
+    digitalWrite(CV6, HIGH);
+    delay(1000);
+    digitalWrite(CV6, LOW);
+}
+
+void Cv7(byte l)
+{
+    if (l)
+    digitalWrite(CV7d, HIGH);
+    else digitalWrite(CV7d, LOW);
+    digitalWrite(CV7, HIGH);
+    delay(1000);
+    digitalWrite(CV7, LOW);
+}
+    
