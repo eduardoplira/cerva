@@ -34,7 +34,8 @@ byte Ts3addr[8];
 byte type_s;                // Colocar uma variavel por sensor
 float temp[3];              // Temperatura atual
 int Tset[3] = {25, 26, 27}; // Temperatura setada
-
+bool term = 0;
+bool term2 = 0;
 // variaveis recebiveis
 
 int litragem1;
