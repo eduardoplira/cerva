@@ -48,6 +48,9 @@ void controlatemp()
   letemp(2);
   delay(1000);
   letemp(3);
+  Serial.print(temp[1]);
+  Serial.print(temp[2]);
+  Serial.print(temp[3]);
 }
 
 void letemp(byte l)
